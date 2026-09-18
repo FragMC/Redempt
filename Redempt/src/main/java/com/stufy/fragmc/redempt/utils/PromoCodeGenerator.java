@@ -1,11 +1,11 @@
 package com.stufy.fragmc.redempt.utils;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class PromoCodeGenerator {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     public static String generateCode() {
         StringBuilder code = new StringBuilder();
