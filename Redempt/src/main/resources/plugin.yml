@@ -1,0 +1,27 @@
+name: Redempt
+version: 1.0.0
+main: com.stufy.fragmc.redempt.Redempt
+api-version: 1.21
+author: Stufy
+description: A promo code redemption plugin with EssentialsX integration
+depend: [Essentials]
+
+commands:
+  promo:
+    description: Manage promo codes
+    usage: /promo <create|delete|info|list|renew> [args]
+    permission: redempt.admin
+    aliases: [promocode, promocodes]
+  redeem:
+    description: Redeem a promo code
+    usage: /redeem <code>
+    permission: redempt.use
+    aliases: [redeemcode, code]
+
+permissions:
+  redempt.admin:
+    description: Allows access to admin promo commands
+    default: op
+  redempt.use:
+    description: Allows players to redeem promo codes
+    default: true

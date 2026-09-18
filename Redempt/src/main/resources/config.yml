@@ -1,0 +1,13 @@
+# Redempt Configuration
+
+# Currency symbol to display (from EssentialsX config)
+# This should match your EssentialsX currency-symbol setting
+currency-symbol: "$"
+
+# Plugin settings
+settings:
+  # Enable debug logging
+  debug: false
+
+  # Automatically clean up expired promo codes (not implemented yet)
+  auto-cleanup-expired: false
