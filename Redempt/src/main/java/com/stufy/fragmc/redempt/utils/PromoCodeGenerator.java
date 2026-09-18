@@ -10,7 +10,7 @@ public class PromoCodeGenerator {
     public static String generateCode() {
         StringBuilder code = new StringBuilder();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (i > 0) {
                 code.append("-");
             }
@@ -25,6 +25,6 @@ public class PromoCodeGenerator {
     }
 
     public static boolean isValidFormat(String code) {
-        return code.matches("^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$");
+        return code.matches("^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$");
     }
 }

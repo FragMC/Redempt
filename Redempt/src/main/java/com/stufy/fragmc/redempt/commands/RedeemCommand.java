@@ -42,7 +42,21 @@ public class RedeemCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        String code = args[0].toUpperCase().replace(" ", "");
+        String rawCode = args[0].toUpperCase();
+        // Normalize: remove all non-alphanumeric (dashes, spaces) to handle both XXXX-XXXX-XXXX and XXXX-XXXX-XXXX-XXXX
+        String normalized = rawCode.replaceAll("[^A-Z0-9]", "");
+        // Support both 12-char (3x4) legacy and 16-char (4x4) new codes from shop (shop sends 16-char)
+        if (normalized.length() != 12 && normalized.length() != 16) {
+            player.sendMessage(ChatColor.RED + "Invalid promo code format! Use XXXX-XXXX-XXXX or XXXX-XXXX-XXXX-XXXX");
+            return true;
+        }
+        // Reconstruct with dashes for DB lookup (DB stores with dashes)
+        String code;
+        if (normalized.length() == 16) {
+            code = normalized.substring(0, 4) + "-" + normalized.substring(4, 8) + "-" + normalized.substring(8, 12) + "-" + normalized.substring(12, 16);
+        } else {
+            code = normalized.substring(0, 4) + "-" + normalized.substring(4, 8) + "-" + normalized.substring(8, 12);
+        }
 
         try {
             PromoCode promoCode = promoCodeManager.getPromoCode(code);

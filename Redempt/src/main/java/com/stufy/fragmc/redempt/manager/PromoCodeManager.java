@@ -42,8 +42,18 @@ public class PromoCodeManager {
         return promoCode;
     }
 
+    private String normalizeCode(String code) {
+        String normalized = code.toUpperCase().replaceAll("[^A-Z0-9]", "");
+        if (normalized.length() == 16) {
+            return normalized.substring(0, 4) + "-" + normalized.substring(4, 8) + "-" + normalized.substring(8, 12) + "-" + normalized.substring(12, 16);
+        } else if (normalized.length() == 12) {
+            return normalized.substring(0, 4) + "-" + normalized.substring(4, 8) + "-" + normalized.substring(8, 12);
+        }
+        return code.toUpperCase();
+    }
+
     public PromoCode getPromoCode(String code) throws SQLException {
-        return databaseManager.getPromoCode(code.toUpperCase());
+        return databaseManager.getPromoCode(normalizeCode(code));
     }
 
     public boolean redeemCode(String code, UUID playerUUID) throws SQLException {
@@ -72,14 +82,14 @@ public class PromoCodeManager {
     }
 
     public boolean hasPlayerRedeemed(String code, UUID playerUUID) throws SQLException {
-        return databaseManager.hasPlayerRedeemed(code.toUpperCase(), playerUUID);
+        return databaseManager.hasPlayerRedeemed(normalizeCode(code), playerUUID);
     }
 
     public void deletePromoCode(String code) throws SQLException {
-        databaseManager.deletePromoCode(code.toUpperCase());
+        databaseManager.deletePromoCode(normalizeCode(code));
     }
 
     public void renewPromoCode(String code, long newExpiryTime) throws SQLException {
-        databaseManager.updatePromoCodeExpiry(code.toUpperCase(), newExpiryTime);
+        databaseManager.updatePromoCodeExpiry(normalizeCode(code), newExpiryTime);
     }
 }

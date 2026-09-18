@@ -1,10 +1,11 @@
 name: Redempt
-version: 1.0.0
+version: 2.0.8-alpha
 main: com.stufy.fragmc.redempt.Redempt
-api-version: 1.21
+api-version: '26.2'
 author: Stufy
-description: A promo code redemption plugin with EssentialsX integration
+description: A promo code redemption plugin with EssentialsX integration - Bedrock crossplay via Geyser/Floodgate, 26.2
 depend: [Essentials]
+softdepend: [Geyser-Spigot, floodgate]
 
 commands:
   promo:
