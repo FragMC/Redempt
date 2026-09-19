@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.stufy.fragmc</groupId>
-    <artifactId>Redempt</artifactId>
-    <version>2.0.10-alpha</version>
+    <artifactId>redempt</artifactId>
+    <version>2.0.11-alpha</version>
     <packaging>jar</packaging>
 
     <name>Redempt</name>
