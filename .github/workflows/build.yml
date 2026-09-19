@@ -58,6 +58,12 @@ jobs:
           COMMIT_DESC=$(git log -1 --pretty=%B)
           if [[ "$VERSION" == *"-alpha"* ]]; then CHANNEL=Alpha; elif [[ "$VERSION" == *"-beta"* ]]; then CHANNEL=Beta; else CHANNEL=Release; fi
           echo "Publishing Redempt $VERSION to Hangar FragMC/Redempt channel $CHANNEL"
+          # Check if version already exists on Hangar
+          JWT_CHECK=$(curl -s -X POST "https://hangar.papermc.io/api/v1/authenticate?apiKey=$HANGAR_API_TOKEN" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
+          if [ -n "$JWT_CHECK" ]; then
+            EXISTS=$(curl -s -H "Authorization: $JWT_CHECK" "https://hangar.papermc.io/api/v1/projects/FragMC/Redempt/versions/$VERSION" | grep -o '"version":"[^"]*"' || true)
+            if [ -n "$EXISTS" ]; then echo "Version $VERSION already exists on Hangar, skipping"; exit 0; fi
+          fi
           echo "$COMMIT_DESC" > /tmp/changelog.txt
           JWT=$(curl -s -X POST "https://hangar.papermc.io/api/v1/authenticate?apiKey=$HANGAR_API_TOKEN" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
           if [ -z "$JWT" ]; then echo "Failed to authenticate with Hangar"; exit 0; fi
@@ -65,7 +71,7 @@ jobs:
             -H "Authorization: $JWT" \
             -F "channel=$CHANNEL" -F "version=$VERSION" -F "changelog=@/tmp/changelog.txt" \
             -F "files=@Redempt/target/redempt-$VERSION.jar;type=application/java-archive" \
-            -F "platform=PAPER" -F "platformVersions=[\"26.2\"]" || echo "Hangar publish failed or version already exists (ignoring)"
+            -F "platform=PAPER" -F "platformVersions=[\"26.2\"]" || echo "Hangar publish failed (ignoring)"
           echo "Hangar publish attempted for $VERSION on $CHANNEL"
 
       - name: Create GitHub Release with commit description as Maven release notes
